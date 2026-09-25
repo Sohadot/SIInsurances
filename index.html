@@ -1,0 +1,595 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090909">
+<meta name="description" content="SIInsurances.com — a strategic identity for the insurance and liability layer of autonomous systems.">
+<title>SIInsurances.com — Insurance Follows Agency</title>
+<style>
+:root{
+  --bg:#080808;
+  --paper:#f0ede6;
+  --muted:#9a978f;
+  --dim:#5f5c56;
+  --line:#292824;
+  --line2:#3a3832;
+  --risk:#ff6a3d;
+  --risk2:#ffb15d;
+  --signal:#e8ff7b;
+  --panel:#0e0e0d;
+  --max:1380px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--paper);
+  font-family:Arial,Helvetica,sans-serif;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(var(--max),calc(100% - 44px));margin:auto}
+.mono{font-family:"Courier New",monospace}
+.serif{font-family:Georgia,"Times New Roman",serif}
+.rule{height:1px;background:var(--line)}
+nav{
+  position:fixed;left:0;right:0;top:0;z-index:30;
+  background:linear-gradient(to bottom,rgba(8,8,8,.96),rgba(8,8,8,.72),transparent);
+}
+.navin{height:78px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{font-size:15px;font-weight:800;letter-spacing:-.02em}
+.brand b{color:var(--risk);font-weight:800}
+.navmeta{display:flex;align-items:center;gap:22px;color:#96928a;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.navmeta a:last-child{border:1px solid var(--line2);padding:10px 14px;border-radius:999px;color:var(--paper)}
+
+.hero{
+  min-height:100svh;position:relative;display:flex;align-items:center;padding:116px 0 58px;
+  overflow:hidden;
+}
+.hero:before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:56px 56px;
+  mask-image:linear-gradient(to bottom,black 0%,black 70%,transparent 100%);
+}
+.hero:after{
+  content:"";position:absolute;width:780px;height:780px;border-radius:50%;
+  right:-220px;top:-240px;background:radial-gradient(circle,rgba(255,106,61,.11),transparent 62%);
+  filter:blur(8px);pointer-events:none;
+}
+.hero-grid{
+  position:relative;z-index:2;display:grid;grid-template-columns:.82fr 1.18fr;gap:44px;align-items:center;width:100%;
+}
+.kicker{
+  font-size:11px;letter-spacing:.17em;text-transform:uppercase;color:var(--risk2);
+  margin-bottom:22px;
+}
+h1{
+  margin:0;font-family:Georgia,"Times New Roman",serif;font-weight:400;
+  font-size:clamp(62px,9.4vw,150px);line-height:.78;letter-spacing:-.07em;
+}
+h1 .line2{display:block;margin-left:.58em;color:#b8b4ab;font-style:italic}
+.hero-copy{
+  max-width:620px;margin-top:34px;font-size:clamp(18px,1.5vw,24px);line-height:1.46;color:#c3beb4;
+}
+.hero-copy strong{color:var(--paper);font-weight:600}
+.hero-foot{
+  margin-top:38px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+}
+.pill{
+  border:1px solid var(--line2);border-radius:999px;padding:12px 16px;
+  font-size:11px;letter-spacing:.11em;text-transform:uppercase;
+}
+.pill.hot{border-color:rgba(255,106,61,.44);background:rgba(255,106,61,.07);color:#ffd3c5}
+.arrowlink{font-size:13px;color:#bbb6ad}
+.arrowlink span{color:var(--risk);margin-left:8px}
+
+.horizon{
+  position:relative;height:680px;border-left:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.h-label{
+  position:absolute;top:0;left:0;color:#716e67;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  transform:translateY(-24px)
+}
+.axis-x{
+  position:absolute;left:0;right:0;bottom:54px;height:1px;background:var(--line2)
+}
+.axis-y{
+  position:absolute;left:52px;top:0;bottom:54px;width:1px;background:var(--line2)
+}
+.axis-text{
+  position:absolute;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:#6e6a63
+}
+.axis-text.x{right:0;bottom:29px}
+.axis-text.y{left:-6px;top:0;writing-mode:vertical-rl;transform:rotate(180deg)}
+.agency-curve{
+  position:absolute;left:52px;right:22px;bottom:54px;top:46px;
+}
+.agency-curve svg{width:100%;height:100%;overflow:visible}
+.stage{
+  position:absolute;bottom:24px;transform:translateX(-50%);text-align:center;z-index:3;
+  font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#807c74
+}
+.stage s{display:block;text-decoration:none;color:#d9d4ca;font-size:11px;margin-bottom:4px}
+.stage.s1{left:18%}.stage.s2{left:48%}.stage.s3{left:80%}
+.node{
+  position:absolute;width:18px;height:18px;border-radius:50%;
+  background:#111;border:1px solid #827d74;box-shadow:0 0 0 5px rgba(255,255,255,.02);
+}
+.node.n1{left:17%;bottom:170px}
+.node.n2{left:47%;bottom:305px;border-color:var(--risk2)}
+.node.n3{left:79%;bottom:520px;border-color:var(--risk);box-shadow:0 0 0 7px rgba(255,106,61,.06),0 0 36px rgba(255,106,61,.22)}
+.gap{
+  position:absolute;top:0;bottom:54px;left:63%;width:1px;background:linear-gradient(to bottom,transparent,var(--risk),transparent);
+  box-shadow:0 0 24px rgba(255,106,61,.28)
+}
+.gap:before{
+  content:"LIABILITY GAP";position:absolute;top:76px;left:12px;white-space:nowrap;
+  color:var(--risk);font:11px "Courier New",monospace;letter-spacing:.14em
+}
+.gap:after{
+  content:"Agency outruns inherited coverage logic";position:absolute;top:98px;left:12px;width:220px;
+  color:#a8a197;font-size:12px;line-height:1.45
+}
+.layer{
+  position:absolute;left:63%;right:8%;top:190px;height:235px;
+  border:1px solid rgba(232,255,123,.26);background:rgba(232,255,123,.025);
+  clip-path:polygon(0 8%,100% 0,100% 92%,0 100%);
+  display:flex;align-items:center;justify-content:center;text-align:center;padding:38px;
+}
+.layer-inner{max-width:320px}
+.layer .small{font:10px "Courier New",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--signal)}
+.layer h3{margin:12px 0 10px;font:400 34px/1.02 Georgia,serif;letter-spacing:-.04em}
+.layer p{margin:0;color:#aaa69e;font-size:13px;line-height:1.55}
+
+.band{
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:22px 0;background:#0b0b0a;overflow:hidden
+}
+.band-track{
+  display:flex;gap:38px;white-space:nowrap;font:11px "Courier New",monospace;
+  letter-spacing:.13em;text-transform:uppercase;color:#89857e;
+}
+.band-track b{color:#d7d2c8;font-weight:400}
+.band-track .hot{color:var(--risk)}
+
+section{padding:120px 0}
+.section-label{
+  font:11px "Courier New",monospace;letter-spacing:.16em;text-transform:uppercase;color:#7c7871;margin-bottom:22px
+}
+.statement{
+  max-width:1080px;font:400 clamp(42px,6vw,92px)/.98 Georgia,serif;
+  letter-spacing:-.055em;margin:0
+}
+.statement em{color:var(--risk2);font-style:italic}
+.statement .ghost{color:#77736c}
+
+.logic{
+  margin-top:82px;display:grid;grid-template-columns:1fr 88px 1fr 88px 1fr;align-items:center;
+}
+.logic-node{
+  min-height:240px;border-top:1px solid var(--line2);padding-top:20px;
+}
+.logic-node .index{font:10px "Courier New",monospace;color:#6d6962;letter-spacing:.12em}
+.logic-node h3{font:400 34px/1.03 Georgia,serif;letter-spacing:-.035em;margin:52px 0 12px}
+.logic-node p{max-width:300px;color:#99958d;font-size:14px;line-height:1.6}
+.logic-arrow{text-align:center;color:var(--risk);font-size:28px}
+
+.break{
+  position:relative;padding:20px 0 138px;
+}
+.break-line{
+  height:1px;background:linear-gradient(90deg,var(--line),var(--risk),var(--line));
+  position:relative;margin-bottom:62px
+}
+.break-line:after{
+  content:"";position:absolute;left:50%;top:50%;width:12px;height:12px;border-radius:50%;
+  background:var(--risk);transform:translate(-50%,-50%);box-shadow:0 0 34px rgba(255,106,61,.56)
+}
+.break-grid{display:grid;grid-template-columns:.72fr 1.28fr;gap:80px}
+.break-title{font:400 clamp(46px,6vw,88px)/.92 Georgia,serif;letter-spacing:-.055em;margin:0}
+.break-copy{font-size:20px;line-height:1.6;color:#bbb6ad;max-width:760px}
+.break-copy strong{color:var(--paper)}
+.break-copy .question{
+  display:block;margin-top:26px;color:var(--risk2);font-family:Georgia,serif;font-style:italic;font-size:28px;line-height:1.3
+}
+
+.field-section{
+  background:#0b0b0a;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:0
+}
+.field-grid{display:grid;grid-template-columns:.72fr 1.28fr;min-height:900px}
+.field-left{
+  padding:90px 60px 90px 0;border-right:1px solid var(--line);position:sticky;top:0;height:100vh;display:flex;flex-direction:column;justify-content:center
+}
+.field-left h2{font:400 clamp(48px,6vw,96px)/.88 Georgia,serif;letter-spacing:-.065em;margin:12px 0 26px}
+.field-left p{color:#a9a49c;line-height:1.7;font-size:16px;max-width:420px}
+.field-right{padding:90px 0 90px 60px}
+.field-row{
+  min-height:185px;display:grid;grid-template-columns:110px 1fr 120px;align-items:center;gap:26px;
+  border-bottom:1px solid var(--line)
+}
+.field-row:first-child{border-top:1px solid var(--line)}
+.field-code{font:11px "Courier New",monospace;letter-spacing:.12em;color:#6e6b64}
+.field-name{font:400 clamp(28px,3vw,48px)/1 Georgia,serif;letter-spacing:-.035em}
+.field-desc{color:#8f8a83;font-size:12px;line-height:1.5;text-align:right}
+.field-row:hover .field-name{color:var(--risk2)}
+.field-row:hover{background:linear-gradient(90deg,transparent,rgba(255,106,61,.035),transparent)}
+
+.commercial{
+  padding:140px 0
+}
+.commercial-head{display:grid;grid-template-columns:.7fr 1.3fr;gap:80px;align-items:start}
+.commercial h2{font:400 clamp(54px,7vw,110px)/.88 Georgia,serif;letter-spacing:-.065em;margin:0}
+.commercial-copy{font-size:20px;line-height:1.6;color:#aaa59d;max-width:750px}
+.commercial-copy strong{color:var(--paper)}
+.arch{
+  margin-top:90px;position:relative;border-top:1px solid var(--line2);padding-top:66px;
+}
+.arch-line{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+.arch-item{min-height:240px;padding:0 26px;border-left:1px solid var(--line)}
+.arch-item:last-child{border-right:1px solid var(--line)}
+.arch-item .top{font:10px "Courier New",monospace;letter-spacing:.13em;color:#77736c}
+.arch-item h3{font:400 30px/1.03 Georgia,serif;letter-spacing:-.035em;margin:58px 0 12px}
+.arch-item p{font-size:13px;line-height:1.6;color:#8e8a82}
+.arch-caption{
+  margin-top:28px;font:11px "Courier New",monospace;letter-spacing:.11em;text-transform:uppercase;color:#77736c
+}
+.arch-caption span{color:var(--signal)}
+
+.identity{
+  padding:150px 0;position:relative;overflow:hidden
+}
+.identity:before{
+  content:"SI";position:absolute;right:-.08em;top:50%;transform:translateY(-51%);
+  font:700 min(47vw,720px)/.7 Arial,sans-serif;letter-spacing:-.11em;color:rgba(255,255,255,.018);
+  pointer-events:none
+}
+.identity-grid{display:grid;grid-template-columns:.75fr 1.25fr;gap:80px;align-items:end;position:relative;z-index:2}
+.identity-word{font:400 clamp(70px,11vw,165px)/.75 Georgia,serif;letter-spacing:-.075em;margin:0}
+.identity-word span{display:block;color:var(--risk);font-style:italic;margin-left:.45em}
+.identity-copy{max-width:650px;font-size:21px;line-height:1.6;color:#b3aea5}
+.identity-copy strong{color:var(--paper)}
+.identity-tags{
+  display:flex;gap:10px;flex-wrap:wrap;margin-top:32px
+}
+.identity-tags span{font:10px "Courier New",monospace;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--line2);padding:10px 12px;border-radius:999px;color:#aaa59d}
+
+.acquire{
+  min-height:92vh;display:flex;align-items:center;position:relative;padding:120px 0;border-top:1px solid var(--line)
+}
+.acquire:before{
+  content:"";position:absolute;inset:12% 0 8%;background:
+  radial-gradient(circle at 68% 50%,rgba(255,106,61,.13),transparent 28%),
+  radial-gradient(circle at 52% 50%,rgba(232,255,123,.055),transparent 36%);
+  pointer-events:none
+}
+.acquire-box{
+  position:relative;z-index:2;width:100%;border-top:1px solid var(--line2);border-bottom:1px solid var(--line2);
+  padding:56px 0;display:grid;grid-template-columns:1.2fr .8fr;gap:80px;align-items:end
+}
+.acquire h2{font:400 clamp(54px,8vw,124px)/.83 Georgia,serif;letter-spacing:-.07em;margin:0}
+.acquire h2 em{display:block;color:var(--risk2);font-style:italic}
+.acquire-right p{font-size:18px;line-height:1.6;color:#aaa59c;margin:0 0 28px}
+.domain{
+  font-weight:800;font-size:clamp(24px,3vw,40px);letter-spacing:-.04em;margin-bottom:28px
+}
+.domain b{color:var(--risk)}
+.cta{
+  display:inline-flex;align-items:center;gap:14px;border:1px solid rgba(255,106,61,.55);
+  border-radius:999px;padding:14px 18px;font:11px "Courier New",monospace;letter-spacing:.12em;text-transform:uppercase;
+  background:rgba(255,106,61,.065)
+}
+.cta i{width:7px;height:7px;border-radius:50%;background:var(--risk);box-shadow:0 0 18px rgba(255,106,61,.75)}
+.disclaimer{margin-top:24px;color:#6f6b64;font-size:11px;line-height:1.6;max-width:520px}
+
+footer{padding:34px 0 48px;border-top:1px solid var(--line);color:#66625c;font-size:11px}
+.footer{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+
+.reveal{opacity:0;transform:translateY(22px);transition:.8s cubic-bezier(.2,.7,.2,1)}
+.reveal.on{opacity:1;transform:none}
+@keyframes glow{0%,100%{filter:drop-shadow(0 0 0 rgba(255,106,61,0))}50%{filter:drop-shadow(0 0 12px rgba(255,106,61,.45))}}
+.node.n3{animation:glow 3.2s ease-in-out infinite}
+
+@media(max-width:980px){
+  .hero-grid,.break-grid,.commercial-head,.identity-grid,.acquire-box{grid-template-columns:1fr}
+  .horizon{height:560px;margin-top:30px}
+  .logic{grid-template-columns:1fr}
+  .logic-arrow{transform:rotate(90deg);padding:18px}
+  .field-grid{grid-template-columns:1fr}
+  .field-left{position:relative;top:auto;height:auto;padding:80px 0 50px;border-right:0;border-bottom:1px solid var(--line)}
+  .field-right{padding:30px 0 80px}
+  .arch-line{grid-template-columns:1fr 1fr}
+  .arch-item{border-bottom:1px solid var(--line);min-height:220px}
+}
+@media(max-width:620px){
+  .wrap{width:min(var(--max),calc(100% - 24px))}
+  .navmeta span{display:none}
+  .hero{padding-top:100px}
+  .hero-grid{gap:24px}
+  h1{font-size:64px}
+  .horizon{height:500px}
+  .gap{left:58%}.layer{left:58%;right:2%;padding:20px}.layer h3{font-size:26px}
+  .node.n1{left:13%}.node.n2{left:42%}.node.n3{left:74%}
+  .stage.s1{left:15%}.stage.s2{left:44%}.stage.s3{left:78%}
+  .logic-node h3{margin-top:28px}
+  .field-row{grid-template-columns:62px 1fr;min-height:150px}.field-desc{display:none}
+  .arch-line{grid-template-columns:1fr}
+  .arch-item{border-right:1px solid var(--line)}
+  .identity-word{font-size:76px}
+  .acquire{min-height:auto}
+}
+@media(prefers-reduced-motion:reduce){
+  *{scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none;transition:none}
+  .node.n3{animation:none}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="wrap navin">
+    <a class="brand" href="#top">SI<b>Insurances</b>.com</a>
+    <div class="navmeta">
+      <span>Machine liability / autonomous economy</span>
+      <a href="#acquire">Strategic acquisition</a>
+    </div>
+  </div>
+</nav>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="reveal">
+        <div class="kicker mono">A category thesis for non-human agency</div>
+        <h1>Insurance<br><span class="line2">follows agency.</span></h1>
+        <p class="hero-copy">
+          When humans act, liability has a familiar address.
+          When <strong>systems begin to decide, transact and execute</strong>,
+          that address starts to move.
+        </p>
+        <div class="hero-foot">
+          <a class="pill hot" href="#thesis">Enter the liability shift</a>
+          <a class="arrowlink" href="#acquire">SIInsurances.com <span>↘</span></a>
+        </div>
+      </div>
+
+      <div class="horizon reveal" aria-label="Conceptual diagram of agency and liability">
+        <div class="h-label mono">Liability horizon / conceptual model</div>
+        <div class="axis-x"></div><div class="axis-y"></div>
+        <div class="axis-text x mono">Autonomy →</div>
+        <div class="axis-text y mono">Agency density ↑</div>
+
+        <div class="agency-curve">
+          <svg viewBox="0 0 760 560" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M40,470 C180,445 255,375 340,305 C440,220 520,105 710,46"
+                  fill="none" stroke="#47443e" stroke-width="1.5"/>
+            <path d="M40,470 C180,445 255,375 340,305 C440,220 520,105 710,46"
+                  fill="none" stroke="url(#g)" stroke-width="2.2" stroke-dasharray="3 9"/>
+            <defs>
+              <linearGradient id="g" x1="0" x2="1">
+                <stop offset="0%" stop-color="#6c6962"/>
+                <stop offset="55%" stop-color="#ffb15d"/>
+                <stop offset="100%" stop-color="#ff6a3d"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <div class="node n1"></div><div class="node n2"></div><div class="node n3"></div>
+        <div class="stage s1 mono"><s>Human</s>direct action</div>
+        <div class="stage s2 mono"><s>Delegated</s>agent action</div>
+        <div class="stage s3 mono"><s>Autonomous</s>system action</div>
+
+        <div class="gap"></div>
+        <div class="layer">
+          <div class="layer-inner">
+            <div class="small mono">Emerging insurance layer</div>
+            <h3 class="serif">Risk must learn a new actor.</h3>
+            <p>Identity · authority · provenance · failure · recourse</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="band">
+    <div class="wrap band-track">
+      <span><b>Human action</b></span><span>→</span>
+      <span><b>Delegated agency</b></span><span>→</span>
+      <span class="hot">Autonomous action</span><span>→</span>
+      <span><b>Liability ambiguity</b></span><span>→</span>
+      <span><b>New insurance logic</b></span>
+    </div>
+  </div>
+
+  <section id="thesis">
+    <div class="wrap">
+      <div class="section-label">01 / The thesis</div>
+      <p class="statement reveal">
+        The important shift is not that AI becomes more intelligent.
+        It is that intelligence becomes <em>operational.</em>
+        <span class="ghost">It begins to act.</span>
+      </p>
+
+      <div class="logic">
+        <div class="logic-node reveal">
+          <div class="index">A / AUTHORITY</div>
+          <h3>Systems receive permission.</h3>
+          <p>Agents are delegated scopes, credentials, budgets and operational authority.</p>
+        </div>
+        <div class="logic-arrow">→</div>
+        <div class="logic-node reveal">
+          <div class="index">B / ACTION</div>
+          <h3>Systems create consequences.</h3>
+          <p>They transact, route, execute, select, reject, commit and interact with other systems.</p>
+        </div>
+        <div class="logic-arrow">→</div>
+        <div class="logic-node reveal">
+          <div class="index">C / LIABILITY</div>
+          <h3>Risk acquires a new locus.</h3>
+          <p>Responsibility must be traced across humans, organizations, models, agents and infrastructure.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="break">
+    <div class="wrap">
+      <div class="break-line"></div>
+      <div class="break-grid">
+        <h2 class="break-title reveal">The old question was:<br><span style="color:#77736c">what was insured?</span></h2>
+        <div class="break-copy reveal">
+          A world of autonomous systems introduces another question:
+          <strong>who — or what — possessed the authority to cause the insured event?</strong>
+          <span class="question">When agency fragments, insurance has to map the fragments.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="field-section">
+    <div class="wrap field-grid">
+      <div class="field-left">
+        <div class="section-label">02 / The emerging field</div>
+        <h2>Machine liability is not one risk.</h2>
+        <p>
+          It is a field of connected exposures created when software becomes an actor inside economic,
+          operational and institutional systems.
+        </p>
+      </div>
+
+      <div class="field-right">
+        <div class="field-row">
+          <div class="field-code">ML / 01</div>
+          <div class="field-name">Agent Authority</div>
+          <div class="field-desc">Who allowed the action?</div>
+        </div>
+        <div class="field-row">
+          <div class="field-code">ML / 02</div>
+          <div class="field-name">Decision Failure</div>
+          <div class="field-desc">Which inference caused loss?</div>
+        </div>
+        <div class="field-row">
+          <div class="field-code">ML / 03</div>
+          <div class="field-name">Autonomous Transaction</div>
+          <div class="field-desc">Was the commitment valid?</div>
+        </div>
+        <div class="field-row">
+          <div class="field-code">ML / 04</div>
+          <div class="field-name">Identity & Delegation</div>
+          <div class="field-desc">Who was the agent acting for?</div>
+        </div>
+        <div class="field-row">
+          <div class="field-code">ML / 05</div>
+          <div class="field-name">Model Provenance</div>
+          <div class="field-desc">What chain produced the outcome?</div>
+        </div>
+        <div class="field-row">
+          <div class="field-code">ML / 06</div>
+          <div class="field-name">Infrastructure Dependency</div>
+          <div class="field-desc">Where did operational failure begin?</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="commercial">
+    <div class="wrap">
+      <div class="commercial-head">
+        <div class="section-label">03 / Commercial architecture</div>
+        <div>
+          <h2 class="reveal">A category becomes valuable when it becomes infrastructure.</h2>
+          <p class="commercial-copy reveal">
+            The commercial thesis for <strong>SIInsurances.com</strong> is broader than a single policy.
+            A serious platform in this space could sit across the entire risk-transfer stack:
+            from defining machine exposure to underwriting it, evidencing it and resolving it.
+          </p>
+        </div>
+      </div>
+
+      <div class="arch reveal">
+        <div class="arch-line">
+          <div class="arch-item">
+            <div class="top">01 / DEFINE</div>
+            <h3>Risk language</h3>
+            <p>Taxonomies for autonomous action, delegated authority and machine-caused loss.</p>
+          </div>
+          <div class="arch-item">
+            <div class="top">02 / PRICE</div>
+            <h3>Underwriting</h3>
+            <p>Models that translate behavior, controls, permissions and reliability into insurable exposure.</p>
+          </div>
+          <div class="arch-item">
+            <div class="top">03 / PROVE</div>
+            <h3>Evidence</h3>
+            <p>Trace, provenance and operational records that establish what the system actually did.</p>
+          </div>
+          <div class="arch-item">
+            <div class="top">04 / TRANSFER</div>
+            <h3>Coverage</h3>
+            <p>Insurance structures designed around increasingly autonomous economic actors.</p>
+          </div>
+        </div>
+        <div class="arch-caption">The opportunity is not merely to sell a policy. <span>It is to define the risk layer around machine agency.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="identity">
+    <div class="wrap identity-grid">
+      <h2 class="identity-word reveal">SI<span>Insurances</span></h2>
+      <div class="identity-copy reveal">
+        <strong>Superintelligence changes the locus of action.</strong><br>
+        Insurance will have to follow.
+        <div class="identity-tags">
+          <span>Agentic AI</span>
+          <span>Machine liability</span>
+          <span>Algorithmic risk</span>
+          <span>Autonomous commerce</span>
+          <span>Digital infrastructure</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="acquire" id="acquire">
+    <div class="wrap acquire-box">
+      <div>
+        <div class="section-label">Strategic acquisition</div>
+        <h2>Own the name<br><em>before the category settles.</em></h2>
+      </div>
+      <div class="acquire-right">
+        <div class="domain">SI<b>Insurances</b>.com</div>
+        <p>
+          A strategic digital identity for an operator building at the intersection of
+          superintelligence, autonomous systems, liability and next-generation insurance infrastructure.
+        </p>
+        <div class="cta"><i></i> Available for strategic acquisition</div>
+        <div class="disclaimer">
+          Conceptual positioning only. SIInsurances.com is not presented as an insurer, broker,
+          underwriter, insurance policy or regulated financial service.
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer">
+    <span>SIInsurances.com</span>
+    <span class="mono">Machine liability / autonomous economy / strategic identity</span>
+  </div>
+</footer>
+
+<script>
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}
+  })
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
